@@ -1,0 +1,12 @@
+{
+  "name": "NSS GDC Kathua",
+  "short_name": "NSS GDC Kathua",
+  "description": "Official National Service Scheme portal of Government Degree College Kathua.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFBF6",
+  "theme_color": "#0B2D5C",
+  "icons": [
+    {"src":"nss-logo.png","sizes":"640x640","type":"image/png","purpose":"any maskable"}
+  ]
+}

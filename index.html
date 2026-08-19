@@ -1252,6 +1252,14 @@
     return /^https?:\/\//i.test(String(s || "").trim());
   }
 
+  function imageUrlFromMedia(s){
+    var u = String(s || "").trim();
+    if (!isUrl(u)) return "";
+    var m = u.match(/drive\.google\.com\/file\/d\/([^\/?#]+)/i);
+    if (m) return "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1000";
+    return u;
+  }
+
   function buildCard(icon, title, sub, link, sectionKey){
     var inner =
       '<span class="action-icon">' + icon + '</span>' +
@@ -1267,11 +1275,10 @@
   function renderSection(slotId, icon, rows, mapRow, sectionKey){
     var slot = document.getElementById(slotId);
     if (!slot || !rows || !rows.length) return; // keep existing "Coming Soon" card
-    var html = "";
-    rows.forEach(function(row){
-      var c = mapRow(row);
-      html += '<li>' + buildCard(icon, c.title, c.sub, c.link, sectionKey) + '</li>';
-    });
+    var meta = sectionMeta[sectionKey] || {};
+    var label = meta.title || icon;
+    var subLabel = meta.kicker || "";
+    var html = '<li>' + buildCard(icon, label, subLabel, null, sectionKey) + '</li>';
     slot.outerHTML = html;
   }
 
@@ -1293,18 +1300,19 @@
     var meta=sectionMeta[sectionKey] || sectionMeta.Notices;
     var rows=liveData[sectionKey] || [];
     title.textContent=meta.icon+"  "+meta.title;
-    kicker.textContent=meta.kicker+" • Live from Google Sheets";
+    kicker.textContent=meta.kicker;
 
     if(!rows.length){
       body.innerHTML='<div class="content-empty"><strong>No updates yet</strong><span>New '+escapeHtml(meta.title.toLowerCase())+' will appear here automatically.</span></div>';
     }else{
       body.innerHTML=rows.map(function(r){
-        var titleText=r.Title || "Untitled";
+        var titleText=r.Title || meta.title;
         var date=r.Date || "";
         var desc=r.Description || "";
         var link=r.Link || "";
         var media = r.ImageURL || r.ImageUrl || r.Image || r.PhotoURL || r.PhotoUrl || r.Photo || r.Thumbnail || r.ThumbnailURL || r.MediaURL || r.MediaUrl || "";
         if(!media && /\.(?:png|jpe?g|gif|webp|svg)(?:[?#].*)?$/i.test(String(link || ""))) media=link;
+        if(!media && /drive\.google\.com\/file\/d\//i.test(String(link || ""))) media=imageUrlFromMedia(link);
         var mediaHtml = isUrl(media) ? '<a class="content-item-media-link" href="'+escapeHtml(media)+'" target="_blank" rel="noopener"><img class="content-item-media" src="'+escapeHtml(media)+'" alt="'+escapeHtml(titleText)+'" loading="lazy"></a>' : "";
         var pdfHtml = !media && isUrl(link) && /\.pdf(?:[?#].*)?$/i.test(String(link)) ? '<a class="content-item-pdf" href="'+escapeHtml(link)+'" target="_blank" rel="noopener">📄 View PDF document ↗</a>' : "";
         var linkHtml=isUrl(link) && link !== media && !/\.pdf(?:[?#].*)?$/i.test(String(link)) ? '<a class="content-item-link" href="'+escapeHtml(link)+'" target="_blank" rel="noopener">Open update ↗</a>' : "";
@@ -1374,7 +1382,7 @@
 <div id="content-modal" aria-hidden="true">
   <div class="content-modal-card" role="dialog" aria-modal="true" aria-labelledby="content-modal-title">
     <div class="content-modal-head">
-      <div class="content-modal-kicker" id="content-modal-kicker">Live from Google Sheets</div>
+      <div class="content-modal-kicker" id="content-modal-kicker"></div>
       <div class="content-modal-title" id="content-modal-title">Notices</div>
       <button class="content-modal-close" type="button" id="content-modal-close" aria-label="Close">×</button>
     </div>

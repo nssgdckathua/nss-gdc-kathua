@@ -726,6 +726,141 @@
     .content-modal-body{padding:12px}
   }
 
+  /* ============ JOIN NSS REGISTRATION MODAL ============ */
+  #join-modal{position:fixed;inset:0;z-index:10002;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(5,22,49,.72);backdrop-filter:blur(10px)}
+  #join-modal.open{display:flex}
+  .join-modal-card{width:min(620px,100%);max-height:min(82vh,760px);overflow:auto;background:var(--paper);color:var(--ink);border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.38);border:1px solid rgba(201,162,39,.35);position:relative}
+  .join-modal-head{position:sticky;top:0;z-index:2;padding:20px 54px 16px 22px;background:linear-gradient(180deg,var(--navy),var(--navy-deep));color:#fff;border-bottom:2px solid var(--gold)}
+  .join-modal-kicker{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:5px}
+  .join-modal-title{font-family:'Fraunces',serif;font-size:25px;font-weight:600}
+  .join-modal-close{position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+  .join-modal-body{padding:18px}
+  .join-form-card{display:flex;align-items:center;gap:14px;padding:16px;margin-bottom:12px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);text-decoration:none;color:inherit}
+  .join-form-card:last-child{margin-bottom:0}
+  .join-form-icon{font-size:25px;flex:0 0 auto}
+  .join-form-text{flex:1}
+  .join-form-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--navy);margin-bottom:4px}
+  .join-form-sub{font-size:12px;line-height:1.5;color:var(--gray)}
+  .join-form-badge{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--red);border:1px solid rgba(170,35,45,.25);border-radius:999px;padding:5px 8px;white-space:nowrap}
+  .join-form-arrow{font-size:20px;color:var(--navy)}
+  @media(max-width:520px){#join-modal{padding:12px}.join-modal-card{max-height:88vh;border-radius:20px}.join-modal-title{font-size:22px}.join-modal-body{padding:12px}.join-form-card{padding:14px}}
+
+  /* ============ PROGRAMME OFFICERS MODAL ============ */
+  #programme-modal{
+    position:fixed;
+    inset:0;
+    z-index:10003;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:rgba(5,22,49,.72);
+    backdrop-filter:blur(10px);
+  }
+  #programme-modal.open{display:flex;}
+  .programme-modal-card{
+    width:min(620px,100%);
+    max-height:min(82vh,760px);
+    overflow:auto;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:24px;
+    box-shadow:0 30px 90px rgba(0,0,0,.38);
+    border:1px solid rgba(201,162,39,.35);
+    position:relative;
+  }
+  .programme-modal-head{
+    position:sticky;
+    top:0;
+    z-index:2;
+    padding:20px 54px 16px 22px;
+    background:linear-gradient(180deg,var(--navy),var(--navy-deep));
+    color:#fff;
+    border-bottom:2px solid var(--gold);
+  }
+  .programme-modal-kicker{
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin-bottom:5px;
+  }
+  .programme-modal-title{
+    font-family:'Fraunces',serif;
+    font-size:25px;
+    font-weight:600;
+  }
+  .programme-modal-close{
+    position:absolute;
+    right:14px;
+    top:14px;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    font-size:24px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .programme-modal-body{padding:18px;}
+  .programme-officer-card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    margin-bottom:12px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:var(--shadow-card);
+    text-decoration:none;
+    color:inherit;
+  }
+  .programme-officer-card:last-child{margin-bottom:0;}
+  .programme-officer-icon{
+    font-size:25px;
+    flex:0 0 auto;
+  }
+  .programme-officer-text{flex:1;}
+  .programme-officer-name{
+    display:block;
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    font-weight:600;
+    color:var(--navy);
+    margin-bottom:3px;
+  }
+  .programme-officer-role{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    color:var(--gray);
+    margin-bottom:4px;
+  }
+  .programme-officer-phone{
+    display:block;
+    font-size:13px;
+    font-weight:800;
+    color:var(--red);
+  }
+  .programme-officer-arrow{
+    font-size:20px;
+    color:var(--navy);
+  }
+  @media(max-width:520px){
+    #programme-modal{padding:12px;}
+    .programme-modal-card{
+      max-height:88vh;
+      border-radius:20px;
+    }
+    .programme-modal-title{font-size:22px;}
+    .programme-modal-body{padding:12px;}
+    .programme-officer-card{padding:14px;}
+  }
+
 </style>
 </head>
 <body>
@@ -795,14 +930,14 @@
       <ul class="actions">
 
         <li>
-          <div class="action-card priority">
+          <button class="action-card priority" type="button" id="join-nss-button">
             <span class="action-icon">📝</span>
             <span class="action-text">
               <span class="action-label">Join NSS</span>
-              <span class="action-sub">Fill the official enrolment form</span>
+              <span class="action-sub">Complete both mandatory registration forms</span>
             </span>
-            <span class="coming-soon">Coming Soon</span>
-          </div>
+            <span class="action-chevron">›</span>
+          </button>
         </li>
 
         <li>
@@ -905,14 +1040,14 @@
         </li>
 
         <li>
-          <div class="action-card">
+          <button class="action-card" type="button" id="programme-officers-button">
             <span class="action-icon">📞</span>
             <span class="action-text">
               <span class="action-label">Contact Programme Officers</span>
               <span class="action-sub">Reach our NSS POs</span>
             </span>
-            <span class="coming-soon">Coming Soon</span>
-          </div>
+            <span class="action-chevron">›</span>
+          </button>
         </li>
 
         <li>
@@ -1370,6 +1505,89 @@
 </script>
 
 
+<!-- Programme Officers contact modal -->
+<div id="programme-modal" aria-hidden="true">
+  <div class="programme-modal-card" role="dialog" aria-modal="true" aria-labelledby="programme-modal-title">
+    <div class="programme-modal-head">
+      <div class="programme-modal-kicker">NSS GDC Kathua</div>
+      <div class="programme-modal-title" id="programme-modal-title">Programme Officers</div>
+      <button class="programme-modal-close" type="button" id="programme-modal-close" aria-label="Close">×</button>
+    </div>
+
+    <div class="programme-modal-body">
+
+      <a class="programme-officer-card" href="tel:+919906143406">
+        <span class="programme-officer-icon">👨‍🏫</span>
+        <span class="programme-officer-text">
+          <span class="programme-officer-name">Dr. Kulbir Singh</span>
+          <span class="programme-officer-role">Programme Officer</span>
+          <span class="programme-officer-phone">+91 99061 43406</span>
+        </span>
+        <span class="programme-officer-arrow">›</span>
+      </a>
+
+      <a class="programme-officer-card" href="tel:+919858157617">
+        <span class="programme-officer-icon">👩‍🏫</span>
+        <span class="programme-officer-text">
+          <span class="programme-officer-name">Dr. Pratima Sangra</span>
+          <span class="programme-officer-role">Programme Officer</span>
+          <span class="programme-officer-phone">+91 98581 57617</span>
+        </span>
+        <span class="programme-officer-arrow">›</span>
+      </a>
+
+      <a class="programme-officer-card" href="tel:+919797503027">
+        <span class="programme-officer-icon">👨‍🏫</span>
+        <span class="programme-officer-text">
+          <span class="programme-officer-name">Prof. Arvind Kumar</span>
+          <span class="programme-officer-role">Programme Officer</span>
+          <span class="programme-officer-phone">+91 97975 03027</span>
+        </span>
+        <span class="programme-officer-arrow">›</span>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- Join NSS registration modal -->
+<div id="join-modal" aria-hidden="true">
+  <div class="join-modal-card" role="dialog" aria-modal="true" aria-labelledby="join-modal-title">
+    <div class="join-modal-head">
+      <div class="join-modal-kicker">Official NSS Enrolment</div>
+      <div class="join-modal-title" id="join-modal-title">Join NSS</div>
+      <button class="join-modal-close" type="button" id="join-modal-close" aria-label="Close">×</button>
+    </div>
+
+    <div class="join-modal-body">
+
+      <a class="join-form-card" href="nss-registration-form.pdf" target="_blank" rel="noopener" id="physical-form-link">
+        <span class="join-form-icon">📄</span>
+        <span class="join-form-text">
+          <span class="join-form-title">Physical Registration Form</span>
+          <span class="join-form-sub">Complete the physical form and submit it as instructed by NSS.</span>
+        </span>
+        <span class="join-form-badge">Mandatory</span>
+        <span class="join-form-arrow">›</span>
+      </a>
+
+      <a class="join-form-card"
+         href="https://forms.gle/ywTFFN1NM79bFZBq8"
+         target="_blank"
+         rel="noopener">
+        <span class="join-form-icon">🌐</span>
+        <span class="join-form-text">
+          <span class="join-form-title">Digital Registration Form</span>
+          <span class="join-form-sub">Complete the official Google Form online.</span>
+        </span>
+        <span class="join-form-badge">Mandatory</span>
+        <span class="join-form-arrow">›</span>
+      </a>
+
+    </div>
+  </div>
+</div>
+
 <!-- Live Google Sheets content modal -->
 <div id="content-modal" aria-hidden="true">
   <div class="content-modal-card" role="dialog" aria-modal="true" aria-labelledby="content-modal-title">
@@ -1381,6 +1599,74 @@
     <div class="content-modal-body" id="content-modal-body"></div>
   </div>
 </div>
+
+
+<script>
+(function(){
+  var modal = document.getElementById("join-modal");
+  var openButton = document.getElementById("join-nss-button");
+  var closeButton = document.getElementById("join-modal-close");
+
+  if (!modal || !openButton || !closeButton) return;
+
+  function openJoinModal(){
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  }
+
+  function closeJoinModal(){
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+
+  openButton.addEventListener("click", openJoinModal);
+  closeButton.addEventListener("click", closeJoinModal);
+
+  modal.addEventListener("click", function(e){
+    if(e.target === modal) closeJoinModal();
+  });
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeJoinModal();
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  var modal = document.getElementById("programme-modal");
+  var openButton = document.getElementById("programme-officers-button");
+  var closeButton = document.getElementById("programme-modal-close");
+
+  if (!modal || !openButton || !closeButton) return;
+
+  function openProgrammeModal(){
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  }
+
+  function closeProgrammeModal(){
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+
+  openButton.addEventListener("click", openProgrammeModal);
+  closeButton.addEventListener("click", closeProgrammeModal);
+
+  modal.addEventListener("click", function(e){
+    if(e.target === modal) closeProgrammeModal();
+  });
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeProgrammeModal();
+  });
+})();
+</script>
 
 </body>
 </html>

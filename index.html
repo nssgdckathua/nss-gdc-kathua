@@ -283,9 +283,15 @@
     margin:20px auto 8px;
   }
   .seal-fallback img{
+    width:96px;
     height:96px;
-    width:auto;
+    object-fit:contain;
     filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
+  }
+  .seal-fallback img.gdc-emblem{
+    width:118px;
+    height:96px;
+    object-fit:contain;
   }
   .no-webgl .seal-fallback{display:flex;}
   .no-webgl .seal-stage{display:none;}
@@ -871,7 +877,7 @@
   <div class="launch-glow" aria-hidden="true"></div>
   <div class="launch-card">
     <div class="launch-emblems">
-      <img src="gdc-logo.png" alt="Government Degree College Kathua crest">
+      <img class="gdc-emblem" src="gdc-logo.png" alt="Government Degree College Kathua crest">
       <img src="nss-logo.png" alt="National Service Scheme emblem">
     </div>
     <p class="launch-kicker">🇮🇳 80th Independence Day • 15 August 2026</p>
@@ -895,13 +901,9 @@
     <div class="hero-inner">
       <p class="eyebrow">Official NSS GDC Kathua Portal</p>
 
-      <!-- 3D rotating seal (WebGL). Falls back to flat SVG seal if WebGL/JS unavailable. -->
-      <div class="seal-stage">
-        <canvas id="seal-canvas"></canvas>
-      </div>
-
-      <div class="seal-fallback">
-        <img src="gdc-logo.png" alt="Government Degree College Kathua crest">
+      <!-- Static official emblems -->
+      <div class="seal-fallback" style="display:flex;">
+        <img class="gdc-emblem" src="gdc-logo.png" alt="Government Degree College Kathua crest">
         <img src="nss-logo.png" alt="National Service Scheme emblem">
       </div>
 
@@ -1168,7 +1170,7 @@
 
     var group=new THREE.Group(); scene.add(group);
     var coin=new THREE.Mesh(
-      new THREE.CylinderGeometry(2.05,2.05,.34,96),
+      new THREE.CylinderGeometry(1.80,1.80,.34,96),
       new THREE.MeshStandardMaterial({color:navy,metalness:.82,roughness:.2,emissive:0x06162e,emissiveIntensity:.35})
     );
     coin.rotation.x=Math.PI/2; group.add(coin);
@@ -1180,7 +1182,7 @@
 
     var gdcGeo=new THREE.PlaneGeometry(3.25,2.65);
     var gdcMat=new THREE.MeshBasicMaterial({map:gdcTex,transparent:true,side:THREE.DoubleSide,depthWrite:false});
-    var gdcPlane=new THREE.Mesh(gdcGeo,gdcMat); gdcPlane.position.z=.23; group.add(gdcPlane);
+    var gdcPlane=new THREE.Mesh(gdcGeo,gdcMat); gdcPlane.position.z=.23; gdcPlane.visible=false; group.add(gdcPlane);
     var nssGeo=new THREE.PlaneGeometry(2.72,2.72);
     var nssMat=new THREE.MeshBasicMaterial({map:nssTex,transparent:true,side:THREE.DoubleSide,depthWrite:false});
     var nssPlane=new THREE.Mesh(nssGeo,nssMat); nssPlane.position.z=-.23; nssPlane.rotation.y=Math.PI; group.add(nssPlane);
@@ -1189,10 +1191,8 @@
       var m=new THREE.MeshStandardMaterial({color:goldSoft,metalness:.9,roughness:.18,transparent:opacity<1,opacity:opacity,emissive:0x3a2c05,emissiveIntensity:.25});
       var t=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,18,128),m); t.rotation.x=rotX; group.add(t); return t;
     }
-    var ring1=torus(2.18,.055,1,Math.PI/2);
-    var ring2=torus(1.98,.022,.65,Math.PI/2);
-    var ring3=torus(2.35,.012,.4,Math.PI/2);
-    var orbit=torus(2.52,.012,.42,.35);
+    var ring3=torus(2.35,.012,0,Math.PI/2);
+    var orbit=torus(2.52,.012,0,.35);
 
     var beadGeo=new THREE.SphereGeometry(.055,12,12), beadMat=new THREE.MeshStandardMaterial({color:gold,metalness:.85,roughness:.2,emissive:0x3a2c05,emissiveIntensity:.35});
     var beads=[];
@@ -1205,12 +1205,37 @@
     var clock=new THREE.Clock();
     function animate(){
       requestAnimationFrame(animate); var t=clock.getElapsedTime();
+
       if(!reduceMotion){
-        group.rotation.y += (targetY + .0015 - group.rotation.y)*.035;
+        /* Equal logo timing: GDC 4s → flip 2s → NSS 4s → flip 2s */
+        var cycle=t%12;
+        var autoFlip;
+
+        if(cycle<4){
+          autoFlip=0;
+        }else if(cycle<6){
+          var p=(cycle-4)/2;
+          p=p*p*(3-2*p);
+          autoFlip=Math.PI*p;
+        }else if(cycle<10){
+          autoFlip=Math.PI;
+        }else{
+          var p=(cycle-10)/2;
+          p=p*p*(3-2*p);
+          autoFlip=Math.PI+(Math.PI*p);
+        }
+
+        /* Keep the completed flip as the base rotation so the next cycle never jumps backward. */
+        var cycleBase=Math.floor(t/12)*Math.PI*2;
+        var desiredRotation=cycleBase+autoFlip;
+        group.rotation.y += (targetY + desiredRotation + .0015 - group.rotation.y)*.08;
         group.rotation.x += (targetX + Math.sin(t*.5)*.035 - group.rotation.x)*.035;
-        ring1.rotation.z=t*.28; ring2.rotation.z=-t*.42; ring3.rotation.z=t*.16; orbit.rotation.y=t*.32;
+        ring3.rotation.z=t*.16; orbit.rotation.y=t*.32;
         beads.forEach(function(b,i){var a=i*Math.PI/3+t*.28;b.position.x=Math.cos(a)*2.38;b.position.y=Math.sin(a)*2.38;b.position.z=Math.sin(a*2)*.16;});
-      } else {group.rotation.y=.35;}
+      } else {
+        group.rotation.y=.35;
+      }
+
       renderer.render(scene,camera);
     }
     animate();
@@ -1402,6 +1427,15 @@
   function renderSection(slotId, icon, rows, mapRow, sectionKey){
     var slot = document.getElementById(slotId);
     if (!slot || !rows || !rows.length) return; // keep existing "Coming Soon" card
+
+    if (sectionKey === "Events") {
+      slot.outerHTML =
+        '<li>' +
+          buildCard(icon, "Upcoming Events", rows.length + " event" + (rows.length === 1 ? "" : "s") + " available", null, sectionKey) +
+        '</li>';
+      return;
+    }
+
     var html = "";
     rows.forEach(function(row){
       var c = mapRow(row);
@@ -1428,7 +1462,7 @@
     var meta=sectionMeta[sectionKey] || sectionMeta.Notices;
     var rows=liveData[sectionKey] || [];
     title.textContent=meta.icon+"  "+meta.title;
-    kicker.textContent=meta.kicker+" • Live from Google Sheets";
+    kicker.textContent=meta.kicker;
 
     if(!rows.length){
       body.innerHTML='<div class="content-empty"><strong>No updates yet</strong><span>New '+escapeHtml(meta.title.toLowerCase())+' will appear here automatically.</span></div>';

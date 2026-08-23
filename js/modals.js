@@ -28,10 +28,8 @@
     if(e.key === "Escape") closeJoinModal();
   });
 })();
-</script>
 
 
-<script>
 (function(){
   var modal = document.getElementById("programme-modal");
   var openButton = document.getElementById("programme-officers-button");

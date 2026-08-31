@@ -183,32 +183,11 @@
     }
   }
 
-  /* ================= CARD 3D TILT (pointer devices only) ================= */
-  function initTilt(){
-    if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    if (reduceMotion) return;
-    var cards = document.querySelectorAll('.action-card, .why-card');
-    cards.forEach(function(card){
-      card.style.perspective = '600px';
-      card.addEventListener('pointermove', function(e){
-        var rect = card.getBoundingClientRect();
-        var px = (e.clientX - rect.left) / rect.width - 0.5;
-        var py = (e.clientY - rect.top) / rect.height - 0.5;
-        var rotY = px * 8;
-        var rotX = -py * 8;
-        card.style.transform = 'translateY(-2px) rotateX('+rotX+'deg) rotateY('+rotY+'deg)';
-      });
-      card.addEventListener('pointerleave', function(){
-        card.style.transform = '';
-      });
-    });
-  }
-
   if (document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', function(){
-      initSeal(); initParticles(); initTilt(); initDepth(); initDepth();
+      initSeal(); initParticles(); initDepth();
     });
   } else {
-    initSeal(); initParticles(); initTilt(); initDepth();
+    initSeal(); initParticles(); initDepth();
   }
 })();

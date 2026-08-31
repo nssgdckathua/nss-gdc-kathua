@@ -234,14 +234,15 @@
     display:flex;
     align-items:center;
     gap:16px;
+    width:100%;
+    min-height:76px;
+    box-sizing:border-box;
     padding:15px 18px;
     background:var(--white);
     border:1px solid var(--line);
     border-radius:var(--radius-md);
     box-shadow:var(--shadow-card);
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    transform-style:preserve-3d;
-    will-change:transform;
   }
   .action-card:hover{
     box-shadow:var(--shadow-card-hover);
@@ -483,6 +484,17 @@
   .action-card:hover{transform:translateY(-5px) rotateX(1deg);}
   .section-head{transform:translateZ(20px);}
   .section-title{text-shadow:0 4px 14px rgba(11,45,92,.10);}
+
+  /* Keep page text on flat layers so it remains sharp on all displays. */
+  .hero{perspective:none;}
+  .hero-inner,section,.action-card,.why-card{transform-style:flat;}
+  .eyebrow,h1.title,.subtitle-inst,.subtitle-univ,.motto-ribbon,.hero-desc,
+  .action-icon,.why-icon,.action-text,.action-chevron,.coming-soon,
+  .why-title,.why-desc,.section-head{transform:none;}
+  .action-card::after,.why-card::after{transform:none;}
+  .action-card:hover{transform:translateY(-3px);}
+  .why-card:hover{transform:translateY(-3px);}
+
   footer{box-shadow:0 -22px 55px -40px rgba(7,29,63,.8);}
   @media (max-width:700px){
     .actions{grid-template-columns:1fr;}

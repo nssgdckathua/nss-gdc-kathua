@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "media/gallery/videos/raw/**"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -58,3 +59,4 @@ jobs:
           git diff --cached --quiet || git commit -m "Auto-convert gallery videos"
 
           git push
+          

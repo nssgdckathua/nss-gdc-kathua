@@ -1,0 +1,60 @@
+name: Convert Gallery Videos
+
+on:
+  push:
+    paths:
+      - "media/gallery/videos/raw/**"
+
+permissions:
+  contents: write
+
+jobs:
+  convert-videos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Convert videos
+        shell: bash
+        run: |
+          mkdir -p media/gallery/videos
+
+          shopt -s nullglob
+
+          for input in media/gallery/videos/raw/*; do
+            [ -f "$input" ] || continue
+
+            base="$(basename "${input%.*}")"
+
+            ffmpeg -y -i "$input" \
+              -c:v libx264 \
+              -preset medium \
+              -crf 23 \
+              -pix_fmt yuv420p \
+              -c:a aac \
+              -b:a 128k \
+              -movflags +faststart \
+              "media/gallery/videos/${base}.mp4"
+
+            if [ $? -eq 0 ]; then
+              rm -f "$input"
+            fi
+          done
+
+      - name: Commit converted videos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add media/gallery/videos/
+
+          git diff --cached --quiet || git commit -m "Auto-convert gallery videos"
+
+          git push

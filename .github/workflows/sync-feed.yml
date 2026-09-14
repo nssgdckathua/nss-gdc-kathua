@@ -1,0 +1,35 @@
+name: Sync NSS Feed
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch NSS feed
+        run: |
+          curl -L \
+            "https://script.google.com/macros/s/AKfycbxEFciYSaJO0F8jtnPuHL2AHQkCIKXaEFI54RXupe-1hic8nlJlDvfxz1-mU-A_qUWD/exec" \
+            -o data/feed.json
+
+      - name: Commit updated feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/feed.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to feed."
+          else
+            git commit -m "Update NSS feed"
+            git push
+          fi

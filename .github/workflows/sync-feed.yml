@@ -14,11 +14,50 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch NSS feed
+      - name: Fetch NSS feed safely
         run: |
-          curl -L \
-            "https://script.google.com/macros/s/AKfycbxEFciYSaJO0F8jtnPuHL2AHQkCIKXaEFI54RXupe-1hic8nlJlDvfxz1-mU-A_qUWD/exec" \
-            -o data/feed.json
+          set -e
+
+          TEMP_FILE="$(mktemp)"
+
+          echo "Fetching NSS feed..."
+
+          HTTP_CODE=$(curl -L -sS \
+            -A "Mozilla/5.0" \
+            -w "%{http_code}" \
+            -o "$TEMP_FILE" \
+            "https://script.google.com/macros/s/AKfycbxEFciYSaJO0F8jtnPuHL2AHQkCIKXaEFI54RXupe-1hic8nlJlDVfxz1-mU-A_qUWD/exec")
+
+          echo "HTTP status: $HTTP_CODE"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "ERROR: Apps Script returned HTTP $HTTP_CODE"
+            echo "Response received:"
+            head -c 1000 "$TEMP_FILE"
+            exit 1
+          fi
+
+          echo "Validating JSON..."
+
+          if ! jq empty "$TEMP_FILE"; then
+            echo "ERROR: Response is not valid JSON."
+            echo "Response received:"
+            head -c 1000 "$TEMP_FILE"
+            exit 1
+          fi
+
+          echo "JSON is valid."
+
+          echo "Checking Volunteers field..."
+
+          jq '{
+            VolunteersEnabled: .VolunteersEnabled,
+            VolunteerCount: (.Volunteers | length)
+          }' "$TEMP_FILE"
+
+          mv "$TEMP_FILE" data/feed.json
+
+          echo "Feed updated successfully."
 
       - name: Commit updated feed
         run: |
